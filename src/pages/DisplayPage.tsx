@@ -247,7 +247,7 @@ export function DisplayPage() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {isShaking ? (
-          /* 8 Ball Shaking Animation - Optimized with CSS */
+          /* 8 Ball Shaking Animation - Low-spec optimized */
           <div
             key="ball-shaking"
             className="relative"
@@ -258,27 +258,28 @@ export function DisplayPage() {
                 perspective: '1000px'
               }}
           >
-            {/* Pulsing background glow - simplified */}
+            {/* Simplified background glow - no blur filter */}
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(41,98,255,0.4) 0%, transparent 70%)',
-                filter: 'blur(40px)',
+                background: 'rgba(41,98,255,0.3)',
                 animation: 'pulse 2s ease-in-out infinite'
               }}
             />
             
-            {/* The 8 Ball */}
+            {/* The 8 Ball - simplified gradient */}
             <div
-              className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
+              className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
-                boxShadow: '0 0 80px rgba(41,98,255,0.8), inset 0 0 60px rgba(41,98,255,0.3)'
+                background: '#1a1a1a',
+                boxShadow: '0 0 60px rgba(41,98,255,0.6)'
               }}
             >
-              {/* Shine effect while shaking - simplified */}
+              {/* Simple shine effect - no gradient */}
               <div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 bg-white"
                 style={{
+                  opacity: 0.1,
                   animation: 'spin 3s linear'
                 }}
               />
@@ -287,7 +288,7 @@ export function DisplayPage() {
               <div 
                 className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
                 style={{
-                  boxShadow: '0 0 40px rgba(41,98,255,0.9)',
+                  boxShadow: '0 0 30px rgba(41,98,255,0.8)',
                   animation: 'pulse 0.5s ease-in-out infinite'
                 }}
               >
@@ -343,7 +344,7 @@ export function DisplayPage() {
             </div>
           </div>
         ) : (
-          /* 8 Ball with QR Code or Number 8 (idle state) - Optimized */
+          /* 8 Ball with QR Code or Number 8 (idle state) - Low-spec optimized */
           <div
             key="ball-idle"
             className="relative"
@@ -351,26 +352,29 @@ export function DisplayPage() {
               animation: 'ballIdle 0.8s ease-out'
             }}
           >
-            {/* Subtle pulsing background glow - simplified */}
+            {/* Simplified background glow - no blur filter */}
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(41,98,255,0.2) 0%, transparent 70%)',
-                filter: 'blur(30px)',
+                background: 'rgba(41,98,255,0.2)',
                 animation: 'pulse 3s ease-in-out infinite'
               }}
             />
             
-            {/* The 8 Ball (static) */}
+            {/* The 8 Ball (static) - simplified gradient */}
             <div
-              className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
+              className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
-                boxShadow: '0 0 40px rgba(41,98,255,0.4), inset 0 0 40px rgba(41,98,255,0.1)'
+                background: '#1a1a1a',
+                boxShadow: '0 0 40px rgba(41,98,255,0.4)'
               }}
             >
-              {/* Subtle shine effect - static */}
+              {/* Simple shine effect - static */}
               <div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent"
+                className="absolute inset-0 bg-white"
+                style={{
+                  opacity: 0.05
+                }}
               />
               
               {/* Inner circle with QR or 8 */}
