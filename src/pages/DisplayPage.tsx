@@ -27,18 +27,18 @@ export function DisplayPage() {
     setShowQR(false)
     setIsShaking(true)
     
-    // Step 2: After 2.5 seconds of shaking, show the answer
+    // Step 2: After 3 seconds of shaking, show the answer (building suspense!)
     setTimeout(() => {
       setIsShaking(false)
       setLatestAnswer(message)
-    }, 2500)
+    }, 3000)
     
     // Step 3: After 10 seconds, hide answer and show QR again
     answerTimerRef.current = setTimeout(() => {
       console.log('⏰ 10 seconds passed, returning to QR mode')
       setLatestAnswer(null)
       setShowQR(true)
-    }, 12500) // 2.5s shake + 10s display
+    }, 13000) // 3s shake + 10s display
   }
 
   useEffect(() => {
@@ -160,12 +160,12 @@ export function DisplayPage() {
             key="ball-shaking"
             initial={{ scale: 1 }}
             animate={{ 
-              x: [-20, 20, -20, 20, -15, 15, -20, 20, -10, 10, -15, 15, -5, 5, 0],
-              y: [-10, 10, -10, 10, -8, 8, -12, 12, -5, 5, -8, 8, -2, 2, 0],
-              rotate: [-5, 5, -5, 5, -4, 4, -6, 6, -3, 3, -4, 4, -1, 1, 0]
+              x: [-25, 25, -25, 25, -20, 20, -25, 25, -15, 15, -20, 20, -10, 10, -5, 5, 0],
+              y: [-15, 15, -15, 15, -12, 12, -15, 15, -10, 10, -12, 12, -6, 6, -3, 3, 0],
+              rotate: [-8, 8, -8, 8, -6, 6, -8, 8, -5, 5, -6, 6, -3, 3, -1, 1, 0]
             }}
             transition={{ 
-              duration: 2.5,
+              duration: 3,
               ease: "easeInOut"
             }}
             className="relative"
@@ -178,11 +178,11 @@ export function DisplayPage() {
                 filter: 'blur(40px)',
               }}
               animate={{
-                scale: [1, 1.5, 1.3, 1.6, 1.2, 1.4, 1],
-                opacity: [0.3, 1, 0.7, 1, 0.5, 0.8, 0.3],
+                scale: [1, 1.5, 1.2, 1.6, 1.3, 1.5, 1],
+                opacity: [0.3, 1, 0.6, 1, 0.5, 0.8, 0.3],
               }}
               transition={{
-                duration: 2.5,
+                duration: 3,
                 ease: "easeInOut"
               }}
             />
@@ -202,7 +202,7 @@ export function DisplayPage() {
                   rotate: [0, 360, 180, 540, 720]
                 }}
                 transition={{
-                  duration: 2.5,
+                  duration: 3,
                   ease: "linear"
                 }}
               />
@@ -221,7 +221,7 @@ export function DisplayPage() {
                 }}
                 transition={{
                   duration: 0.3,
-                  repeat: 8
+                  repeat: 10
                 }}
               >
                 <span className="text-black text-7xl md:text-8xl font-bold">8</span>
