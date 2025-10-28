@@ -11,6 +11,7 @@ export function DisplayPage() {
   const [isShaking, setIsShaking] = useState(false)
   const [isPortrait, setIsPortrait] = useState(false)
   const [showControls, setShowControls] = useState(true)
+  const [portraitRotation, setPortraitRotation] = useState(0) // 0°, 90°, 180°, 270°
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null)
   const qrSwitchTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -174,10 +175,10 @@ export function DisplayPage() {
   return (
     <div 
       className="min-h-screen bg-black flex flex-col items-center justify-center p-4 md:p-8 relative overflow-hidden"
-      style={{ 
-        transform: isPortrait ? 'rotate(90deg)' : 'rotate(0deg)',
-        width: isPortrait ? '100vh' : '100vw',
-        height: isPortrait ? '100vw' : '100vh',
+        style={{ 
+          transform: isPortrait ? `rotate(${90 + portraitRotation}deg)` : 'rotate(0deg)',
+          width: isPortrait ? '100vh' : '100vw',
+          height: isPortrait ? '100vw' : '100vh',
         transformOrigin: 'center center',
         position: 'fixed',
         top: isPortrait ? '50%' : '0',
@@ -192,20 +193,38 @@ export function DisplayPage() {
         {showControls && (
           <>
             {/* Rotation toggle button */}
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              onClick={(e) => {
-                e.stopPropagation()
-                setIsPortrait(!isPortrait)
-                resetControlsTimer()
-              }}
-              className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
-            >
-              {isPortrait ? '↻ Landscape' : '↻ Portrait'}
-            </motion.button>
+                <motion.button
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsPortrait(!isPortrait)
+                    resetControlsTimer()
+                  }}
+                  className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+                >
+                  {isPortrait ? '↻ Landscape' : '↻ Portrait'}
+                </motion.button>
+
+                {/* Flip button - only in portrait mode */}
+                {isPortrait && (
+                  <motion.button
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setPortraitRotation((prev) => (prev + 90) % 360)
+                      resetControlsTimer()
+                    }}
+                    className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+                  >
+                    🔄 Flip ({portraitRotation}°)
+                  </motion.button>
+                )}
 
             {/* Fullscreen toggle */}
             <motion.button
@@ -283,18 +302,42 @@ export function DisplayPage() {
               animation: 'answerAppear 0.8s ease-out'
             }}
           >
-            <Card className="border-4 border-neon-blue bg-black/95 neon-glow shadow-2xl">
-              <CardContent className="p-8 md:p-20">
-                <p 
-                  className="text-center text-5xl md:text-7xl lg:text-9xl text-neon-blue text-neon-glow font-bold uppercase tracking-wider leading-tight"
-                  style={{
-                    animation: 'answerPulse 2s ease-in-out infinite'
-                  }}
-                >
-                  {latestAnswer}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="relative">
+              {/* Upside down triangle container */}
+              <div 
+                className={`relative mx-auto ${
+                  isPortrait ? 'w-80 h-80' : 'w-96 h-96'
+                }`}
+                style={{
+                  clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+                  background: 'linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(0,255,255,0.3) 100%)',
+                  boxShadow: '0 0 40px rgba(0,255,255,0.6), inset 0 0 20px rgba(0,255,255,0.2)'
+                }}
+              >
+                {/* Text content */}
+                <div className="absolute inset-0 flex items-start justify-center pt-8 px-4">
+                  <p 
+                    className={`text-center text-white font-bold uppercase tracking-wider ${
+                      isPortrait 
+                        ? 'text-xs sm:text-sm md:text-base' 
+                        : 'text-sm md:text-base lg:text-lg'
+                    }`}
+                    style={{
+                      animation: 'answerPulse 2s ease-in-out infinite',
+                      textShadow: '0 0 10px rgba(255,255,255,0.8)',
+                      lineHeight: '1.2'
+                    }}
+                  >
+                    {latestAnswer.split(' ').map((word, index, array) => (
+                      <span key={index}>
+                        {word}
+                        {index < array.length - 1 && <br />}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           /* 8 Ball with QR Code or Number 8 (idle state) - Optimized */
@@ -377,13 +420,13 @@ export function DisplayPage() {
           className="absolute bottom-12 text-center"
         >
           <p className="text-white text-2xl mb-2">Escaneie o QR Code e faça uma pergunta aos Espíritos!</p>
-          <p className="text-white/70 text-lg">aria.studio</p>
+          <p className="text-white/70 text-lg">8 Ball Game</p>
         </motion.div>
       )}
 
       {/* Footer */}
       <div className="absolute bottom-4 text-white/50 text-lg">
-        8 Ball Game
+        aria.studio
       </div>
     </div>
   )

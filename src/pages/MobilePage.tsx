@@ -129,7 +129,7 @@ export function MobilePage() {
 
       {/* Footer */}
       <div className="absolute bottom-4 text-white/50 text-sm">
-        8 Ball Game
+        aria.studio
       </div>
     </div>
   )
