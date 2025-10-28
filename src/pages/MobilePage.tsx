@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "../components/ui/button"
-import { Card, CardContent } from "../components/ui/card"
 import { getRandomAnswer } from "../data/answers"
 import { supabase } from "../lib/supabase"
 

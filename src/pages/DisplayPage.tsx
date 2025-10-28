@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react"
 import { QRCodeSVG } from "qrcode.react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase, type Answer } from "../lib/supabase"
-import { Card, CardContent } from "../components/ui/card"
 
 export function DisplayPage() {
   const [latestAnswer, setLatestAnswer] = useState<string | null>(null)
