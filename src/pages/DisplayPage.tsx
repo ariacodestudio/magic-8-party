@@ -312,7 +312,7 @@ export function DisplayPage() {
                   isPortrait ? 'w-80 h-80' : 'w-96 h-96'
                 }`}
               style={{
-                clipPath: 'polygon(50% 0%, 0% 86.6%, 100% 86.6%)',
+                clipPath: 'polygon(50% 100%, 0% 13.4%, 100% 13.4%)',
                 background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
                 boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)',
                 animation: 'flash 2s ease-out'
