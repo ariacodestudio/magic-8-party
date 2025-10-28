@@ -6,6 +6,7 @@ import { Card, CardContent } from "../components/ui/card"
 
 export function DisplayPage() {
   const [latestAnswer, setLatestAnswer] = useState<string | null>(null)
+  const [showAnswer, setShowAnswer] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   
   // Get the current URL for QR code
@@ -28,6 +29,12 @@ export function DisplayPage() {
           console.log('🔔 Real-time event received!', payload)
           const newAnswer = payload.new as Answer
           setLatestAnswer(newAnswer.message)
+          setShowAnswer(true)
+          
+          // Hide answer after 10 seconds
+          setTimeout(() => {
+            setShowAnswer(false)
+          }, 10000)
         }
       )
       .subscribe((status) => {
@@ -49,8 +56,19 @@ export function DisplayPage() {
       if (error) {
         console.error('❌ Error fetching latest answer:', error)
       } else if (data && data.length > 0) {
-        console.log('✅ Latest answer:', data[0].message)
-        setLatestAnswer(data[0].message)
+        const newMessage = data[0].message
+        console.log('✅ Latest answer:', newMessage)
+        
+        // Only update if it's a new answer
+        if (newMessage !== latestAnswer) {
+          setLatestAnswer(newMessage)
+          setShowAnswer(true)
+          
+          // Hide answer after 10 seconds
+          setTimeout(() => {
+            setShowAnswer(false)
+          }, 10000)
+        }
       } else {
         console.log('📭 No answers in database yet')
       }
@@ -82,7 +100,7 @@ export function DisplayPage() {
 
   return (
     <div 
-      className="min-h-screen bg-black flex flex-col items-center justify-center p-8 cursor-pointer"
+      className="min-h-screen bg-black flex flex-col items-center justify-center p-8 cursor-pointer relative"
       onClick={toggleFullscreen}
     >
       {/* Fullscreen hint */}
@@ -92,53 +110,42 @@ export function DisplayPage() {
         </div>
       )}
 
-      {/* Large 8 Ball */}
-      <motion.div
-        className="relative mb-16"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", duration: 0.8 }}
-      >
-        <div className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
-          <div className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center">
-            <span className="text-black text-7xl md:text-8xl font-bold">8</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Answer Display */}
       <AnimatePresence mode="wait">
-        {latestAnswer ? (
+        {showAnswer && latestAnswer ? (
+          /* ANSWER MODE: Show giant answer */
           <motion.div
             key={latestAnswer}
-            initial={{ opacity: 0, y: 50, scale: 0.5, rotate: -10 }}
+            initial={{ opacity: 0, scale: 0.3, rotateY: -180 }}
             animate={{ 
               opacity: 1, 
-              y: 0, 
               scale: 1, 
-              rotate: 0 
+              rotateY: 0 
             }}
-            exit={{ opacity: 0, y: -50, scale: 0.5, rotate: 10 }}
+            exit={{ opacity: 0, scale: 0.3, rotateY: 180 }}
             transition={{ 
-              duration: 0.6, 
+              duration: 0.8, 
               type: "spring",
-              bounce: 0.4
+              bounce: 0.5
             }}
-            className="mb-12 max-w-5xl w-full px-4"
+            className="max-w-6xl w-full px-4"
           >
             <Card className="border-4 border-neon-blue bg-black/95 neon-glow shadow-2xl">
-              <CardContent className="p-8 md:p-16">
+              <CardContent className="p-12 md:p-20">
                 <motion.p 
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  transition={{ 
-                    duration: 0.3,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    repeatDelay: 2
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    textShadow: [
+                      "0 0 20px #00ffff, 0 0 40px #00ffff",
+                      "0 0 30px #00ffff, 0 0 60px #00ffff",
+                      "0 0 20px #00ffff, 0 0 40px #00ffff"
+                    ]
                   }}
-                  className="text-center text-4xl md:text-7xl lg:text-8xl text-neon-blue text-neon-glow font-bold uppercase tracking-wider leading-tight"
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                  className="text-center text-5xl md:text-7xl lg:text-9xl text-neon-blue font-bold uppercase tracking-wider leading-tight"
                 >
                   {latestAnswer}
                 </motion.p>
@@ -146,42 +153,97 @@ export function DisplayPage() {
             </Card>
           </motion.div>
         ) : (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-16 h-32 flex items-center"
+          /* QR CODE MODE: Show 8 ball with QR inside */
+          <motion.div
+            key="qr-ball"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              rotateY: 0
+            }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ type: "spring", duration: 0.8 }}
+            className="flex flex-col items-center"
           >
-            <p className="text-white/50 text-3xl animate-pulse">Waiting for the first question...</p>
+            {/* 8 Ball with mesmerizing animation */}
+            <motion.div
+              animate={{ 
+                rotate: [0, 5, -5, 0],
+                scale: [1, 1.02, 0.98, 1]
+              }}
+              transition={{ 
+                duration: 4,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut"
+              }}
+              className="relative mb-8"
+            >
+              <motion.div
+                animate={{
+                  boxShadow: [
+                    "0 0 20px rgba(255,255,255,0.1)",
+                    "0 0 40px rgba(255,255,255,0.2)",
+                    "0 0 20px rgba(255,255,255,0.1)"
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+                className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
+              >
+                {/* Animated shine effect */}
+                <motion.div 
+                  animate={{
+                    rotate: 360
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                  className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+                />
+                
+                {/* QR Code in center (replacing the 8) */}
+                <motion.div 
+                  animate={{
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                  className="w-48 h-48 md:w-56 md:h-56 bg-white rounded-full flex items-center justify-center shadow-2xl z-10"
+                >
+                  <QRCodeSVG 
+                    value={currentUrl} 
+                    size={160}
+                    level="H"
+                    includeMargin={false}
+                  />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+
+            {/* Instructions */}
+            <motion.div
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-center"
+            >
+              <p className="text-white text-2xl md:text-3xl mb-2 font-bold">
+                Scan to Join the Party! 🎉
+              </p>
+              <p className="text-white/70 text-lg">{currentUrl}</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* QR Code Section - Fades out when answers appear */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: latestAnswer ? 0.3 : 1,
-          scale: latestAnswer ? 0.7 : 1,
-          y: latestAnswer ? 20 : 0
-        }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center space-y-4"
-      >
-        <div className="bg-white p-4 rounded-lg">
-          <QRCodeSVG 
-            value={currentUrl} 
-            size={latestAnswer ? 150 : 200}
-            level="M"
-            includeMargin={true}
-          />
-        </div>
-        <div className="text-center">
-          <p className={`text-white text-xl mb-2 ${latestAnswer ? 'text-base' : ''}`}>
-            {latestAnswer ? 'Scan to play!' : 'Scan to join the party!'}
-          </p>
-          {!latestAnswer && <p className="text-white/70 text-lg">{currentUrl}</p>}
-        </div>
-      </motion.div>
 
       {/* Footer */}
       <div className="absolute bottom-4 text-white/50 text-lg">
