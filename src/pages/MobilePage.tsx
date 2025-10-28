@@ -131,7 +131,7 @@ export function MobilePage() {
             <div 
               className="w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
-                background: '#1a1a1a',
+                background: '#000000',
                 boxShadow: isShaking 
                   ? '0 0 50px rgba(41,98,255,0.6)' 
                   : '0 0 20px rgba(41,98,255,0.3)'

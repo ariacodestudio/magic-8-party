@@ -271,7 +271,7 @@ export function DisplayPage() {
             <div
               className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
-                background: '#1a1a1a',
+                background: '#000000',
                 boxShadow: '0 0 60px rgba(41,98,255,0.6)'
               }}
             >
@@ -365,7 +365,7 @@ export function DisplayPage() {
             <div
               className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
-                background: '#1a1a1a',
+                background: '#000000',
                 boxShadow: '0 0 40px rgba(41,98,255,0.4)'
               }}
             >
