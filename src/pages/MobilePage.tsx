@@ -25,15 +25,21 @@ export function MobilePage() {
 
     // Save to Supabase
     try {
-      const { error } = await supabase
+      console.log('📝 Inserting answer:', answer)
+      const { data, error } = await supabase
         .from('answers')
         .insert([{ message: answer }])
+        .select()
 
       if (error) {
-        console.error('Error saving answer:', error)
+        console.error('❌ Error saving answer:', error)
+        alert(`Failed to save: ${error.message}`)
+      } else {
+        console.log('✅ Answer saved successfully:', data)
       }
     } catch (error) {
-      console.error('Error connecting to Supabase:', error)
+      console.error('❌ Error connecting to Supabase:', error)
+      alert('Failed to connect to database')
     }
 
     // Show answer after shake

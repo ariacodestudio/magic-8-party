@@ -12,6 +12,8 @@ export function DisplayPage() {
   const currentUrl = window.location.origin
 
   useEffect(() => {
+    console.log('🎱 DisplayPage: Setting up real-time subscription...')
+    
     // Subscribe to real-time updates
     const channel = supabase
       .channel('answers-channel')
@@ -23,14 +25,21 @@ export function DisplayPage() {
           table: 'answers'
         },
         (payload) => {
+          console.log('🔔 Real-time event received!', payload)
           const newAnswer = payload.new as Answer
           setLatestAnswer(newAnswer.message)
         }
       )
-      .subscribe()
+      .subscribe((status) => {
+        console.log('📡 Subscription status:', status)
+        if (status === 'CHANNEL_ERROR') {
+          console.error('❌ Real-time subscription failed! Check if realtime is enabled in Supabase.')
+        }
+      })
 
     // Fetch the latest answer on mount
     const fetchLatestAnswer = async () => {
+      console.log('📥 Fetching latest answer from database...')
       const { data, error } = await supabase
         .from('answers')
         .select('*')
@@ -38,16 +47,24 @@ export function DisplayPage() {
         .limit(1)
 
       if (error) {
-        console.error('Error fetching latest answer:', error)
+        console.error('❌ Error fetching latest answer:', error)
       } else if (data && data.length > 0) {
+        console.log('✅ Latest answer:', data[0].message)
         setLatestAnswer(data[0].message)
+      } else {
+        console.log('📭 No answers in database yet')
       }
     }
 
     fetchLatestAnswer()
+    
+    // Poll for updates as a fallback (every 2 seconds)
+    const pollInterval = setInterval(fetchLatestAnswer, 2000)
 
     // Cleanup subscription
     return () => {
+      console.log('🧹 Cleaning up subscription and polling')
+      clearInterval(pollInterval)
       supabase.removeChannel(channel)
     }
   }, [])
