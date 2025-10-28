@@ -9,6 +9,7 @@ export function DisplayPage() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showQR, setShowQR] = useState(true)
   const [isShaking, setIsShaking] = useState(false)
+  const [isPortrait, setIsPortrait] = useState(false)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
   
   // Get the current URL for QR code
@@ -110,16 +111,40 @@ export function DisplayPage() {
 
   return (
     <div 
-      className="min-h-screen bg-black flex flex-col items-center justify-center p-4 md:p-8 cursor-pointer relative overflow-hidden"
-      style={{ transform: 'rotate(0deg)' }}
-      onClick={toggleFullscreen}
+      className="min-h-screen bg-black flex flex-col items-center justify-center p-4 md:p-8 relative overflow-hidden"
+      style={{ 
+        transform: isPortrait ? 'rotate(90deg)' : 'rotate(0deg)',
+        width: isPortrait ? '100vh' : '100vw',
+        height: isPortrait ? '100vw' : '100vh',
+        transformOrigin: 'center center',
+        position: 'fixed',
+        top: isPortrait ? '50%' : '0',
+        left: isPortrait ? '50%' : '0',
+        marginLeft: isPortrait ? '-50vh' : '0',
+        marginTop: isPortrait ? '-50vw' : '0'
+      }}
     >
-      {/* Fullscreen hint */}
-      {!isFullscreen && (
-        <div className="absolute top-4 right-4 text-white/50 text-sm animate-pulse">
-          Click anywhere for fullscreen
-        </div>
-      )}
+      {/* Rotation toggle button */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          setIsPortrait(!isPortrait)
+        }}
+        className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20"
+      >
+        {isPortrait ? '↻ Landscape' : '↻ Portrait'}
+      </button>
+
+      {/* Fullscreen toggle */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          toggleFullscreen()
+        }}
+        className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20"
+      >
+        {isFullscreen ? '⊟ Exit Fullscreen' : '⊡ Fullscreen'}
+      </button>
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
