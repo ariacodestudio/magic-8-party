@@ -6,7 +6,7 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --neon-blue: 219 100% 50%; /* Royal blue */
+    --neon-blue: 222 100% 50%; /* Royal blue - matches ball glow */
   }
   
   body {
