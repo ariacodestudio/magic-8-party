@@ -222,7 +222,7 @@ export function DisplayPage() {
                   }}
                   className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
                 >
-                  🔄 Flip ({portraitRotation}°)
+                  Flip ({portraitRotation}°)
                 </motion.button>
               )}
 
@@ -303,24 +303,25 @@ export function DisplayPage() {
             }}
           >
             <div className="relative">
-              {/* Upside down triangle container */}
+              {/* Upside down equilateral triangle container */}
               <div 
                 className={`relative mx-auto ${
-                  isPortrait ? 'w-80 h-80' : 'w-96 h-96'
+                  isPortrait ? 'w-80' : 'w-96'
                 }`}
                 style={{
+                  height: isPortrait ? '69.28px' : '83.14px', // sqrt(3)/2 * width for equilateral triangle
                   clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
                   background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
                   boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)'
                 }}
               >
                 {/* Text content */}
-                <div className="absolute inset-0 flex items-start justify-center pt-8 px-4">
+                <div className="absolute inset-0 flex items-start justify-center pt-2 px-4">
                   <p 
                     className={`text-center text-white font-bold uppercase tracking-wider ${
                       isPortrait 
-                        ? 'text-xs sm:text-sm md:text-base' 
-                        : 'text-sm md:text-base lg:text-lg'
+                        ? 'text-xs sm:text-sm' 
+                        : 'text-sm md:text-base'
                     }`}
                     style={{
                       animation: 'answerPulse 2s ease-in-out infinite',
@@ -419,8 +420,10 @@ export function DisplayPage() {
           transition={{ delay: 1 }}
           className="absolute bottom-12 text-center"
         >
+          <p className="text-white text-5xl mb-2">Magic 🎱 Ball</p>
+
           <p className="text-white text-2xl mb-2">Escaneie o QR Code e faça uma pergunta aos Espíritos!</p>
-          <p className="text-white/70 text-lg">8 Ball Game</p>
+         
         </motion.div>
       )}
 

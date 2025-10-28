@@ -78,19 +78,20 @@ export function MobilePage() {
             }}
           >
             <div className="relative">
-              {/* Upside down triangle container */}
+              {/* Upside down equilateral triangle container */}
               <div 
-                className="relative mx-auto w-64 h-64"
+                className="relative mx-auto w-64"
                 style={{
+                  height: '55.43px', // sqrt(3)/2 * 64px for equilateral triangle
                   clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
                   background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
                   boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)'
                 }}
               >
                 {/* Text content */}
-                <div className="absolute inset-0 flex items-start justify-center pt-8 px-4">
+                <div className="absolute inset-0 flex items-start justify-center pt-2 px-4">
                   <p 
-                    className="text-center text-white font-bold uppercase tracking-wider text-xs sm:text-sm md:text-base"
+                    className="text-center text-white font-bold uppercase tracking-wider text-xs sm:text-sm"
                     style={{
                       animation: 'answerPulse 2s ease-in-out infinite',
                       textShadow: '0 0 10px rgba(255,255,255,0.8)',
@@ -164,7 +165,7 @@ export function MobilePage() {
         size="xl"
         className="font-bold uppercase tracking-wider mt-16"
       >
-        {isLoading ? "🔮 Consultando os espíritos..." : "Pergunte à Bola 8"}
+        {isLoading ? " Consultando os espíritos..." : "Pergunte à Bola 8"}
       </Button>
 
       {/* Footer */}
