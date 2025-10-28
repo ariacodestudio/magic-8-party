@@ -8,7 +8,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-white text-black hover:bg-white/90",
-        neon: "bg-black border-2 border-[#2962ff] text-[#2962ff] hover:bg-[#2962ff] hover:text-white transition-all duration-300 shadow-[0_0_20px_rgba(41,98,255,0.6)] hover:shadow-[0_0_30px_rgba(41,98,255,0.8)]",
+        neon: "bg-gradient-to-br from-black via-gray-900 to-black border-2 border-[#1a4dff] text-[#4d7fff] hover:from-[#0d1b4d] hover:via-[#1a4dff] hover:to-[#2962ff] hover:text-white transition-all duration-300 shadow-[0_0_25px_rgba(26,77,255,0.8),0_0_50px_rgba(26,77,255,0.4)] hover:shadow-[0_0_35px_rgba(26,77,255,1),0_0_60px_rgba(41,98,255,0.6)]",
         ghost: "hover:bg-white/10",
       },
       size: {
