@@ -10,6 +10,7 @@ export function DisplayPage() {
   const [showQR, setShowQR] = useState(true)
   const [isShaking, setIsShaking] = useState(false)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const lastAnswerIdRef = useRef<string | null>(null)
   
   // Get the current URL for QR code
   const currentUrl = window.location.origin
@@ -122,39 +123,7 @@ export function DisplayPage() {
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
-        {latestAnswer ? (
-          /* Answer Display - Replaces the ball */
-          <motion.div
-            key={`answer-${latestAnswer}`}
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0, rotate: 180, opacity: 0 }}
-            transition={{ 
-              duration: 0.8, 
-              type: "spring",
-              bounce: 0.5
-            }}
-            className="w-full max-w-6xl px-4"
-          >
-            <Card className="border-4 border-neon-blue bg-black/95 neon-glow shadow-2xl">
-              <CardContent className="p-8 md:p-20">
-                <motion.p 
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: [0.95, 1.05, 1] }}
-                  transition={{ 
-                    duration: 0.5,
-                    times: [0, 0.5, 1],
-                    repeat: Infinity,
-                    repeatDelay: 2
-                  }}
-                  className="text-center text-5xl md:text-7xl lg:text-9xl text-neon-blue text-neon-glow font-bold uppercase tracking-wider leading-tight"
-                >
-                  {latestAnswer}
-                </motion.p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ) : isShaking ? (
+        {isShaking ? (
           /* 8 Ball Shaking Animation */
           <motion.div
             key="ball-shaking"
@@ -227,6 +196,38 @@ export function DisplayPage() {
                 <span className="text-black text-7xl md:text-8xl font-bold">8</span>
               </motion.div>
             </div>
+          </motion.div>
+        ) : latestAnswer ? (
+          /* Answer Display - After shake completes */
+          <motion.div
+            key={`answer-${latestAnswer}`}
+            initial={{ scale: 0, rotate: -180, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            exit={{ scale: 0, rotate: 180, opacity: 0 }}
+            transition={{ 
+              duration: 0.8, 
+              type: "spring",
+              bounce: 0.5
+            }}
+            className="w-full max-w-6xl px-4"
+          >
+            <Card className="border-4 border-neon-blue bg-black/95 neon-glow shadow-2xl">
+              <CardContent className="p-8 md:p-20">
+                <motion.p 
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: [0.95, 1.05, 1] }}
+                  transition={{ 
+                    duration: 0.5,
+                    times: [0, 0.5, 1],
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                  className="text-center text-5xl md:text-7xl lg:text-9xl text-neon-blue text-neon-glow font-bold uppercase tracking-wider leading-tight"
+                >
+                  {latestAnswer}
+                </motion.p>
+              </CardContent>
+            </Card>
           </motion.div>
         ) : (
           /* 8 Ball with QR Code or Number 8 (idle state) */
