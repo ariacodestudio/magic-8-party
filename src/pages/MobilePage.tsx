@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/card"
@@ -9,6 +9,7 @@ export function MobilePage() {
   const [currentAnswer, setCurrentAnswer] = useState<string | null>(null)
   const [isShaking, setIsShaking] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const askThe8Ball = async () => {
     setIsLoading(true)
@@ -46,58 +47,29 @@ export function MobilePage() {
     setTimeout(() => {
       setCurrentAnswer(answer)
       setIsLoading(false)
-    }, 3000)
+      
+      // Reset after 10 seconds - hide answer and show 8 ball again
+      answerTimerRef.current = setTimeout(() => {
+        setCurrentAnswer(null)
+      }, 10000) // 10 seconds
+    }, 3000) // 3 seconds shake
   }
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (answerTimerRef.current) {
+        clearTimeout(answerTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
-      {/* 8 Ball */}
-      <motion.div
-        className="relative mb-12"
-        animate={isShaking ? "shake" : "idle"}
-        variants={{
-          shake: {
-            x: [0, -20, 20, -20, 20, -15, 15, -20, 20, -10, 10, -15, 15, -8, 8, -5, 5, 0],
-            y: [0, -10, 10, -10, 10, -8, 8, -10, 10, -5, 5, -8, 8, -3, 3, -2, 2, 0],
-            rotate: [0, -5, 5, -5, 5, -4, 4, -5, 5, -3, 3, -4, 4, -2, 2, -1, 1, 0],
-            transition: { duration: 3, ease: "easeInOut" }
-          },
-          idle: {
-            x: 0,
-            y: 0,
-            rotate: 0
-          }
-        }}
-      >
-        <div 
-          className="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center relative overflow-hidden"
-          style={{
-            boxShadow: isShaking 
-              ? '0 0 60px rgba(41,98,255,0.8), inset 0 0 40px rgba(41,98,255,0.3)' 
-              : '0 0 20px rgba(41,98,255,0.3)'
-          }}
-        >
-          <motion.div 
-            className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
-            animate={isShaking ? { opacity: [0.1, 0.4, 0.1] } : { opacity: 0.1 }}
-            transition={{ duration: 0.3, repeat: isShaking ? 10 : 0 }}
-          />
-          <div 
-            className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center"
-            style={{
-              boxShadow: isShaking 
-                ? '0 0 30px rgba(41,98,255,0.9)' 
-                : 'none'
-            }}
-          >
-            <span className="text-black text-4xl md:text-6xl font-bold">8</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Answer Display - Upside Down Triangle (same as Display Page) */}
+      {/* Main Content - 8 Ball or Answer */}
       <AnimatePresence mode="wait">
-        {currentAnswer && (
+        {currentAnswer ? (
+          /* Answer Display - Upside Down Triangle (replaces 8 ball) */
           <div
             key={`answer-${currentAnswer}`}
             className="w-full max-w-md"
@@ -136,6 +108,51 @@ export function MobilePage() {
               </div>
             </div>
           </div>
+        ) : (
+          /* 8 Ball (normal or shaking) */
+          <motion.div
+            key="ball"
+            className="relative"
+            animate={isShaking ? "shake" : "idle"}
+            variants={{
+              shake: {
+                x: [0, -20, 20, -20, 20, -15, 15, -20, 20, -10, 10, -15, 15, -8, 8, -5, 5, 0],
+                y: [0, -10, 10, -10, 10, -8, 8, -10, 10, -5, 5, -8, 8, -3, 3, -2, 2, 0],
+                rotate: [0, -5, 5, -5, 5, -4, 4, -5, 5, -3, 3, -4, 4, -2, 2, -1, 1, 0],
+                transition: { duration: 3, ease: "easeInOut" }
+              },
+              idle: {
+                x: 0,
+                y: 0,
+                rotate: 0
+              }
+            }}
+          >
+            <div 
+              className="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center relative overflow-hidden"
+              style={{
+                boxShadow: isShaking 
+                  ? '0 0 60px rgba(41,98,255,0.8), inset 0 0 40px rgba(41,98,255,0.3)' 
+                  : '0 0 20px rgba(41,98,255,0.3)'
+              }}
+            >
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+                animate={isShaking ? { opacity: [0.1, 0.4, 0.1] } : { opacity: 0.1 }}
+                transition={{ duration: 0.3, repeat: isShaking ? 10 : 0 }}
+              />
+              <div 
+                className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center"
+                style={{
+                  boxShadow: isShaking 
+                    ? '0 0 30px rgba(41,98,255,0.9)' 
+                    : 'none'
+                }}
+              >
+                <span className="text-black text-4xl md:text-6xl font-bold">8</span>
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
