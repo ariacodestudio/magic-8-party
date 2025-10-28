@@ -95,24 +95,47 @@ export function MobilePage() {
         </div>
       </motion.div>
 
-      {/* Answer Display */}
+      {/* Answer Display - Upside Down Triangle (same as Display Page) */}
       <AnimatePresence mode="wait">
         {currentAnswer && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="mb-8 max-w-md w-full"
+          <div
+            key={`answer-${currentAnswer}`}
+            className="w-full max-w-md"
+            style={{
+              animation: 'answerAppear 0.8s ease-out'
+            }}
           >
-            <Card className="border-neon-blue/50 bg-black/80 neon-glow">
-              <CardContent className="p-6">
-                <p className="text-center text-xl md:text-2xl text-neon-blue text-neon-glow font-semibold">
-                  {currentAnswer}
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+            <div className="relative">
+              {/* Upside down triangle container */}
+              <div 
+                className="relative mx-auto w-64 h-64"
+                style={{
+                  clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+                  background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
+                  boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)'
+                }}
+              >
+                {/* Text content */}
+                <div className="absolute inset-0 flex items-start justify-center pt-8 px-4">
+                  <p 
+                    className="text-center text-white font-bold uppercase tracking-wider text-xs sm:text-sm md:text-base"
+                    style={{
+                      animation: 'answerPulse 2s ease-in-out infinite',
+                      textShadow: '0 0 10px rgba(255,255,255,0.8)',
+                      lineHeight: '1.2'
+                    }}
+                  >
+                    {currentAnswer.split(' ').map((word, index, array) => (
+                      <span key={index}>
+                        {word}
+                        {index < array.length - 1 && <br />}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
 
