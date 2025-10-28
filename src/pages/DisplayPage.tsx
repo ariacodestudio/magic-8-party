@@ -110,7 +110,8 @@ export function DisplayPage() {
 
   return (
     <div 
-      className="min-h-screen bg-black flex flex-col items-center justify-center p-8 cursor-pointer relative overflow-hidden"
+      className="min-h-screen bg-black flex flex-col items-center justify-center p-4 md:p-8 cursor-pointer relative overflow-hidden"
+      style={{ transform: 'rotate(0deg)' }}
       onClick={toggleFullscreen}
     >
       {/* Fullscreen hint */}
@@ -138,20 +139,13 @@ export function DisplayPage() {
             }}
             className="relative"
           >
-            {/* Pulsing background glow */}
-            <motion.div
+            {/* Pulsing background glow - simplified */}
+            <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(0,255,255,0.5) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%)',
                 filter: 'blur(40px)',
-              }}
-              animate={{
-                scale: [1, 1.5, 1.2, 1.6, 1.3, 1.5, 1],
-                opacity: [0.3, 1, 0.6, 1, 0.5, 0.8, 0.3],
-              }}
-              transition={{
-                duration: 3,
-                ease: "easeInOut"
+                animation: 'pulse 2s ease-in-out infinite'
               }}
             />
             
@@ -162,38 +156,24 @@ export function DisplayPage() {
                 boxShadow: '0 0 80px rgba(0,255,255,0.8), inset 0 0 60px rgba(0,255,255,0.3)'
               }}
             >
-              {/* Intense shine effect while shaking */}
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent"
-                animate={{
-                  x: [-200, 600, -100, 700, 0],
-                  rotate: [0, 360, 180, 540, 720]
-                }}
-                transition={{
-                  duration: 3,
-                  ease: "linear"
+              {/* Shine effect while shaking - simplified */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
+                style={{
+                  animation: 'spin 3s linear'
                 }}
               />
               
               {/* Inner circle with number 8 */}
-              <motion.div 
+              <div 
                 className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
-                animate={{
-                  boxShadow: [
-                    '0 0 30px rgba(0,255,255,0.8)',
-                    '0 0 60px rgba(0,255,255,1)',
-                    '0 0 40px rgba(0,255,255,0.9)',
-                    '0 0 70px rgba(0,255,255,1)',
-                    '0 0 30px rgba(0,255,255,0.8)',
-                  ]
-                }}
-                transition={{
-                  duration: 0.3,
-                  repeat: 10
+                style={{
+                  boxShadow: '0 0 40px rgba(0,255,255,0.9)',
+                  animation: 'pulse 0.5s ease-in-out infinite'
                 }}
               >
                 <span className="text-black text-7xl md:text-8xl font-bold">8</span>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         ) : latestAnswer ? (
@@ -238,67 +218,33 @@ export function DisplayPage() {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            {/* Subtle pulsing background glow */}
-            <motion.div
+            {/* Subtle pulsing background glow - simplified */}
+            <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(0,255,255,0.3) 0%, transparent 70%)',
-                filter: 'blur(40px)',
-              }}
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.5, 0.7, 0.5],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
+                background: 'radial-gradient(circle, rgba(0,255,255,0.2) 0%, transparent 70%)',
+                filter: 'blur(30px)',
+                animation: 'pulse 3s ease-in-out infinite'
               }}
             />
             
-            {/* The 8 Ball (no rotation) */}
-            <motion.div
-              animate={{
-                scale: [1, 1.02, 1],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+            {/* The 8 Ball (static) */}
+            <div
               className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
               style={{
-                boxShadow: '0 0 60px rgba(0,255,255,0.5), inset 0 0 60px rgba(0,255,255,0.2)'
+                boxShadow: '0 0 40px rgba(0,255,255,0.4), inset 0 0 40px rgba(0,255,255,0.1)'
               }}
             >
-              {/* Subtle shine effect */}
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
-                animate={{
-                  x: [-100, 400],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  repeatDelay: 3,
-                  ease: "easeInOut"
-                }}
+              {/* Subtle shine effect - static */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent"
               />
               
               {/* Inner circle with QR or 8 */}
-              <motion.div 
+              <div 
                 className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
-                animate={{
-                  boxShadow: [
-                    '0 0 20px rgba(0,255,255,0.5)',
-                    '0 0 30px rgba(0,255,255,0.7)',
-                    '0 0 20px rgba(0,255,255,0.5)',
-                  ]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
+                style={{
+                  boxShadow: '0 0 20px rgba(0,255,255,0.5)'
                 }}
               >
                 <AnimatePresence mode="wait">
@@ -332,8 +278,8 @@ export function DisplayPage() {
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
