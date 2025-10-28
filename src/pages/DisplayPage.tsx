@@ -172,19 +172,19 @@ export function DisplayPage() {
   }, [])
 
   return (
-    <div 
-      className="min-h-screen bg-black flex flex-col items-center justify-center p-2 md:p-4 relative overflow-hidden"
-        style={{ 
-          transform: isPortrait ? `rotate(${90 + portraitRotation}deg)` : 'rotate(0deg)',
-          width: isPortrait ? '100vh' : '100vw',
-          height: isPortrait ? '100vw' : '100vh',
-          transformOrigin: 'center center',
-          position: 'fixed',
-          top: isPortrait ? '50%' : '0',
-          left: isPortrait ? '50%' : '0',
-          marginLeft: isPortrait ? '-50vh' : '0',
-          marginTop: isPortrait ? '-50vw' : '0'
-        }}
+      <div 
+        className="h-screen w-screen bg-black flex flex-col items-center justify-center p-4 md:p-8 relative overflow-hidden"
+          style={{ 
+            transform: isPortrait ? `rotate(${90 + portraitRotation}deg)` : 'rotate(0deg)',
+            width: isPortrait ? '100vh' : '100vw',
+            height: isPortrait ? '100vw' : '100vh',
+            transformOrigin: 'center center',
+            position: 'fixed',
+            top: isPortrait ? '50%' : '0',
+            left: isPortrait ? '50%' : '0',
+            marginLeft: isPortrait ? '-50vh' : '0',
+            marginTop: isPortrait ? '-50vw' : '0'
+          }}
       onMouseMove={handleMouseMove}
     >
       {/* Control buttons - auto-hide after 5 seconds */}
@@ -269,7 +269,7 @@ export function DisplayPage() {
             
             {/* The 8 Ball - simplified gradient */}
             <div
-              className="w-72 h-72 md:w-80 md:h-80 rounded-full flex items-center justify-center relative overflow-hidden"
+              className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
                 background: '#000000',
                 boxShadow: '0 0 60px rgba(41,98,255,0.6)'
@@ -286,7 +286,7 @@ export function DisplayPage() {
               
               {/* Inner circle with number 8 */}
               <div 
-                className="w-36 h-36 md:w-40 md:h-40 bg-white rounded-full flex items-center justify-center relative z-10"
+                className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
                 style={{
                   boxShadow: '0 0 30px rgba(41,98,255,0.8)',
                   animation: 'pulse 0.5s ease-in-out infinite'
@@ -309,7 +309,7 @@ export function DisplayPage() {
               {/* Upside down triangle container */}
               <div 
                 className={`relative mx-auto ${
-                  isPortrait ? 'w-72 h-72' : 'w-80 h-80'
+                  isPortrait ? 'w-80 h-80' : 'w-96 h-96'
                 }`}
               style={{
                 clipPath: 'polygon(50% 100%, 0% 13.4%, 100% 13.4%)',
@@ -363,7 +363,7 @@ export function DisplayPage() {
             
             {/* The 8 Ball (static) - simplified gradient */}
             <div
-              className="w-72 h-72 md:w-80 md:h-80 rounded-full flex items-center justify-center relative overflow-hidden"
+              className="w-80 h-80 md:w-96 md:h-96 rounded-full flex items-center justify-center relative overflow-hidden"
               style={{
                 background: '#000000',
                 boxShadow: '0 0 40px rgba(41,98,255,0.4)'
@@ -379,7 +379,7 @@ export function DisplayPage() {
               
               {/* Inner circle with QR or 8 */}
               <div 
-                className="w-36 h-36 md:w-40 md:h-40 bg-white rounded-full flex items-center justify-center relative z-10"
+                className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
                 style={{
                   boxShadow: '0 0 20px rgba(41,98,255,0.5)'
                 }}
@@ -424,11 +424,11 @@ export function DisplayPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          className="absolute bottom-8 text-center"
+          className="absolute bottom-12 text-center"
         >
-          <p className="text-white text-4xl mb-2">Magic 🎱 Ball</p>
+          <p className="text-white text-5xl mb-2">Magic 🎱 Ball</p>
 
-          <p className="text-white text-xl mb-2">Escaneie o QR Code e faça uma pergunta aos Espíritos!</p>
+          <p className="text-white text-2xl mb-2">Escaneie o QR Code e faça uma pergunta aos Espíritos!</p>
          
         </motion.div>
       )}
