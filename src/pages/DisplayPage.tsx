@@ -10,7 +10,9 @@ export function DisplayPage() {
   const [showQR, setShowQR] = useState(true)
   const [isShaking, setIsShaking] = useState(false)
   const [isPortrait, setIsPortrait] = useState(false)
+  const [showControls, setShowControls] = useState(true)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const controlsTimerRef = useRef<NodeJS.Timeout | null>(null)
   
   // Get the current URL for QR code
   const currentUrl = window.location.origin
@@ -98,6 +100,30 @@ export function DisplayPage() {
     }
   }, [])
 
+  // Auto-hide controls after 5 seconds
+  const resetControlsTimer = () => {
+    setShowControls(true)
+    
+    if (controlsTimerRef.current) {
+      clearTimeout(controlsTimerRef.current)
+    }
+    
+    controlsTimerRef.current = setTimeout(() => {
+      setShowControls(false)
+    }, 5000)
+  }
+
+  // Show controls when mouse is near the top
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const mouseY = e.clientY
+    const windowHeight = window.innerHeight
+    
+    // Show controls if mouse is in top 100px or bottom 100px
+    if (mouseY < 100 || mouseY > windowHeight - 100) {
+      resetControlsTimer()
+    }
+  }
+
   // Toggle fullscreen
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -108,6 +134,17 @@ export function DisplayPage() {
       setIsFullscreen(false)
     }
   }
+
+  // Initialize controls timer on mount
+  useEffect(() => {
+    resetControlsTimer()
+    
+    return () => {
+      if (controlsTimerRef.current) {
+        clearTimeout(controlsTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <div 
@@ -123,28 +160,46 @@ export function DisplayPage() {
         marginLeft: isPortrait ? '-50vh' : '0',
         marginTop: isPortrait ? '-50vw' : '0'
       }}
+      onMouseMove={handleMouseMove}
     >
-      {/* Rotation toggle button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          setIsPortrait(!isPortrait)
-        }}
-        className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20"
-      >
-        {isPortrait ? '↻ Landscape' : '↻ Portrait'}
-      </button>
+      {/* Control buttons - auto-hide after 5 seconds */}
+      <AnimatePresence>
+        {showControls && (
+          <>
+            {/* Rotation toggle button */}
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsPortrait(!isPortrait)
+                resetControlsTimer()
+              }}
+              className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+            >
+              {isPortrait ? '↻ Landscape' : '↻ Portrait'}
+            </motion.button>
 
-      {/* Fullscreen toggle */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          toggleFullscreen()
-        }}
-        className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20"
-      >
-        {isFullscreen ? '⊟ Exit Fullscreen' : '⊡ Fullscreen'}
-      </button>
+            {/* Fullscreen toggle */}
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => {
+                e.stopPropagation()
+                toggleFullscreen()
+                resetControlsTimer()
+              }}
+              className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+            >
+              {isFullscreen ? '⊟ Exit Fullscreen' : '⊡ Fullscreen'}
+            </motion.button>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
