@@ -8,30 +8,37 @@ export function DisplayPage() {
   const [latestAnswer, setLatestAnswer] = useState<string | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showQR, setShowQR] = useState(true)
+  const [isShaking, setIsShaking] = useState(false)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
   
   // Get the current URL for QR code
   const currentUrl = window.location.origin
 
-  // Handle new answer: show for 10 seconds then return to QR
+  // Handle new answer: show 8 ball shake, then answer, then return to QR
   const handleNewAnswer = (message: string) => {
-    console.log('🎯 Showing new answer:', message)
+    console.log('🎯 New answer incoming:', message)
     
     // Clear any existing timer
     if (answerTimerRef.current) {
       clearTimeout(answerTimerRef.current)
     }
     
-    // Show the answer and hide QR
-    setLatestAnswer(message)
+    // Step 1: Hide QR and show 8 ball shaking
     setShowQR(false)
+    setIsShaking(true)
     
-    // After 10 seconds, hide answer and show QR again
+    // Step 2: After 1 second of shaking, show the answer
+    setTimeout(() => {
+      setIsShaking(false)
+      setLatestAnswer(message)
+    }, 1000)
+    
+    // Step 3: After 10 seconds, hide answer and show QR again
     answerTimerRef.current = setTimeout(() => {
       console.log('⏰ 10 seconds passed, returning to QR mode')
       setLatestAnswer(null)
       setShowQR(true)
-    }, 10000)
+    }, 11000) // 1s shake + 10s display
   }
 
   useEffect(() => {
@@ -147,17 +154,89 @@ export function DisplayPage() {
               </CardContent>
             </Card>
           </motion.div>
-        ) : (
-          /* 8 Ball with QR Code or Number 8 */
+        ) : isShaking ? (
+          /* 8 Ball Shaking Animation */
           <motion.div
-            key="ball"
+            key="ball-shaking"
+            initial={{ scale: 1 }}
+            animate={{ 
+              x: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
+              y: [-10, 10, -10, 10, -5, 5, -2, 2, 0],
+              rotate: [-5, 5, -5, 5, -2, 2, 0]
+            }}
+            transition={{ 
+              duration: 1,
+              ease: "easeInOut"
+            }}
+            className="relative"
+          >
+            {/* Pulsing background glow */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(0,255,255,0.5) 0%, transparent 70%)',
+                filter: 'blur(40px)',
+              }}
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: 1,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* The 8 Ball */}
+            <div
+              className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
+              style={{
+                boxShadow: '0 0 80px rgba(0,255,255,0.8), inset 0 0 60px rgba(0,255,255,0.3)'
+              }}
+            >
+              {/* Intense shine effect while shaking */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent"
+                animate={{
+                  x: [-200, 600],
+                  rotate: [0, 360]
+                }}
+                transition={{
+                  duration: 1,
+                  ease: "linear"
+                }}
+              />
+              
+              {/* Inner circle with number 8 */}
+              <motion.div 
+                className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
+                animate={{
+                  boxShadow: [
+                    '0 0 30px rgba(0,255,255,0.8)',
+                    '0 0 60px rgba(0,255,255,1)',
+                    '0 0 30px rgba(0,255,255,0.8)',
+                  ]
+                }}
+                transition={{
+                  duration: 0.3,
+                  repeat: 3
+                }}
+              >
+                <span className="text-black text-7xl md:text-8xl font-bold">8</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        ) : (
+          /* 8 Ball with QR Code or Number 8 (idle state) */
+          <motion.div
+            key="ball-idle"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            {/* Mesmerizing rotating background glow */}
+            {/* Subtle pulsing background glow */}
             <motion.div
               className="absolute inset-0 rounded-full"
               style={{
@@ -165,8 +244,8 @@ export function DisplayPage() {
                 filter: 'blur(40px)',
               }}
               animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.8, 0.5],
+                scale: [1, 1.1, 1],
+                opacity: [0.5, 0.7, 0.5],
               }}
               transition={{
                 duration: 3,
@@ -175,39 +254,31 @@ export function DisplayPage() {
               }}
             />
             
-            {/* The 8 Ball */}
+            {/* The 8 Ball (no rotation) */}
             <motion.div
               animate={{
-                rotateY: [0, 360],
-                scale: [1, 1.05, 1],
+                scale: [1, 1.02, 1],
               }}
               transition={{
-                rotateY: {
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                },
-                scale: {
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
               }}
               className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
               style={{
                 boxShadow: '0 0 60px rgba(0,255,255,0.5), inset 0 0 60px rgba(0,255,255,0.2)'
               }}
             >
-              {/* Shine effect */}
+              {/* Subtle shine effect */}
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
                 animate={{
                   x: [-100, 400],
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
-                  repeatDelay: 2,
+                  repeatDelay: 3,
                   ease: "easeInOut"
                 }}
               />
@@ -218,7 +289,7 @@ export function DisplayPage() {
                 animate={{
                   boxShadow: [
                     '0 0 20px rgba(0,255,255,0.5)',
-                    '0 0 40px rgba(0,255,255,0.8)',
+                    '0 0 30px rgba(0,255,255,0.7)',
                     '0 0 20px rgba(0,255,255,0.5)',
                   ]
                 }}
