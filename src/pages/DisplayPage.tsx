@@ -252,9 +252,12 @@ export function DisplayPage() {
           <div
             key="ball-shaking"
             className="relative"
-            style={{
-              animation: 'shake 3s ease-in-out'
-            }}
+              style={{
+                animation: 'shake 3s ease-in-out',
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
+                perspective: '1000px'
+              }}
           >
             {/* Pulsing background glow - simplified */}
             <div
