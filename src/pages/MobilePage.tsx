@@ -139,7 +139,7 @@ export function MobilePage() {
             >
               <motion.div 
                 className="absolute inset-0 bg-white"
-                animate={isShaking ? { opacity: [0.1, 0.3, 0.1] } : { opacity: 0.1 }}
+                animate={isShaking ? { opacity: [0.05, 0.15, 0.05] } : { opacity: 0.05 }}
                 transition={{ duration: 0.3, repeat: isShaking ? 10 : 0 }}
               />
               <div 

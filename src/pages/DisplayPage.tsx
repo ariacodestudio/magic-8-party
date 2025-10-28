@@ -279,7 +279,7 @@ export function DisplayPage() {
               <div 
                 className="absolute inset-0 bg-white"
                 style={{
-                  opacity: 0.1,
+                  opacity: 0.05,
                   animation: 'spin 3s linear'
                 }}
               />
@@ -373,7 +373,7 @@ export function DisplayPage() {
               <div 
                 className="absolute inset-0 bg-white"
                 style={{
-                  opacity: 0.05
+                  opacity: 0.03
                 }}
               />
               
