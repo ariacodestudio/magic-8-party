@@ -162,7 +162,7 @@ export function MobilePage() {
         disabled={isLoading}
         variant="neon"
         size="xl"
-        className="font-bold uppercase tracking-wider mt-12"
+        className="font-bold uppercase tracking-wider mt-16"
       >
         {isLoading ? "🔮 Consultando os espíritos..." : "Pergunte à Bola 8"}
       </Button>

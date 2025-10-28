@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'neon-blue': '#00ffff',
+        'neon-blue': 'hsl(var(--neon-blue))',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
