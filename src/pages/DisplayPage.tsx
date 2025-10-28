@@ -303,25 +303,24 @@ export function DisplayPage() {
             }}
           >
             <div className="relative">
-              {/* Upside down equilateral triangle container */}
+              {/* Upside down triangle container */}
               <div 
                 className={`relative mx-auto ${
-                  isPortrait ? 'w-80' : 'w-96'
+                  isPortrait ? 'w-80 h-80' : 'w-96 h-96'
                 }`}
                 style={{
-                  height: isPortrait ? '69.28px' : '83.14px', // sqrt(3)/2 * width for equilateral triangle
-                  clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+                  clipPath: 'polygon(50% 0%, 0% 86.6%, 100% 86.6%)',
                   background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
                   boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)'
                 }}
               >
                 {/* Text content */}
-                <div className="absolute inset-0 flex items-start justify-center pt-2 px-4">
+                <div className="absolute inset-0 flex items-center justify-center px-4">
                   <p 
                     className={`text-center text-white font-bold uppercase tracking-wider ${
                       isPortrait 
-                        ? 'text-xs sm:text-sm' 
-                        : 'text-sm md:text-base'
+                        ? 'text-xs sm:text-sm md:text-base' 
+                        : 'text-sm md:text-base lg:text-lg'
                     }`}
                     style={{
                       animation: 'answerPulse 2s ease-in-out infinite',
