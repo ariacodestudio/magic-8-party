@@ -13,6 +13,7 @@ export function DisplayPage() {
   const [showControls, setShowControls] = useState(true)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const qrSwitchTimerRef = useRef<NodeJS.Timeout | null>(null)
   
   // Get the current URL for QR code
   const currentUrl = window.location.origin
@@ -135,6 +136,30 @@ export function DisplayPage() {
     }
   }
 
+  // Auto-switch between QR and 8 every 5 seconds when idle
+  useEffect(() => {
+    const startQRSwitch = () => {
+      if (qrSwitchTimerRef.current) {
+        clearTimeout(qrSwitchTimerRef.current)
+      }
+      
+      qrSwitchTimerRef.current = setTimeout(() => {
+        if (!latestAnswer && !isShaking) {
+          setShowQR(!showQR)
+          startQRSwitch() // Continue switching
+        }
+      }, 5000)
+    }
+    
+    startQRSwitch()
+    
+    return () => {
+      if (qrSwitchTimerRef.current) {
+        clearTimeout(qrSwitchTimerRef.current)
+      }
+    }
+  }, [showQR, latestAnswer, isShaking])
+
   // Initialize controls timer on mount
   useEffect(() => {
     resetControlsTimer()
@@ -204,20 +229,13 @@ export function DisplayPage() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {isShaking ? (
-          /* 8 Ball Shaking Animation */
-          <motion.div
+          /* 8 Ball Shaking Animation - Optimized with CSS */
+          <div
             key="ball-shaking"
-            initial={{ scale: 1 }}
-            animate={{ 
-              x: [-25, 25, -25, 25, -20, 20, -25, 25, -15, 15, -20, 20, -10, 10, -5, 5, 0],
-              y: [-15, 15, -15, 15, -12, 12, -15, 15, -10, 10, -12, 12, -6, 6, -3, 3, 0],
-              rotate: [-8, 8, -8, 8, -6, 6, -8, 8, -5, 5, -6, 6, -3, 3, -1, 1, 0]
-            }}
-            transition={{ 
-              duration: 3,
-              ease: "easeInOut"
-            }}
             className="relative"
+            style={{
+              animation: 'shake 3s ease-in-out'
+            }}
           >
             {/* Pulsing background glow - simplified */}
             <div
@@ -255,48 +273,37 @@ export function DisplayPage() {
                 <span className="text-black text-7xl md:text-8xl font-bold">8</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         ) : latestAnswer ? (
-          /* Answer Display - After shake completes */
-          <motion.div
+          /* Answer Display - Optimized with CSS */
+          <div
             key={`answer-${latestAnswer}`}
-            initial={{ scale: 0, rotate: -180, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0, rotate: 180, opacity: 0 }}
-            transition={{ 
-              duration: 0.8, 
-              type: "spring",
-              bounce: 0.5
-            }}
             className="w-full max-w-6xl px-4"
+            style={{
+              animation: 'answerAppear 0.8s ease-out'
+            }}
           >
             <Card className="border-4 border-neon-blue bg-black/95 neon-glow shadow-2xl">
               <CardContent className="p-8 md:p-20">
-                <motion.p 
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: [0.95, 1.05, 1] }}
-                  transition={{ 
-                    duration: 0.5,
-                    times: [0, 0.5, 1],
-                    repeat: Infinity,
-                    repeatDelay: 2
-                  }}
+                <p 
                   className="text-center text-5xl md:text-7xl lg:text-9xl text-neon-blue text-neon-glow font-bold uppercase tracking-wider leading-tight"
+                  style={{
+                    animation: 'answerPulse 2s ease-in-out infinite'
+                  }}
                 >
                   {latestAnswer}
-                </motion.p>
+                </p>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         ) : (
-          /* 8 Ball with QR Code or Number 8 (idle state) */
-          <motion.div
+          /* 8 Ball with QR Code or Number 8 (idle state) - Optimized */
+          <div
             key="ball-idle"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.8 }}
             className="relative"
+            style={{
+              animation: 'ballIdle 0.8s ease-out'
+            }}
           >
             {/* Subtle pulsing background glow - simplified */}
             <div
@@ -329,37 +336,35 @@ export function DisplayPage() {
               >
                 <AnimatePresence mode="wait">
                   {showQR ? (
-                        <motion.div
-                          key="qr"
-                          initial={{ scale: 0, rotate: -90 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          exit={{ scale: 0, rotate: 90 }}
-                          transition={{ duration: 0.5 }}
-                          className="flex items-center justify-center"
-                        >
-                          <QRCodeSVG 
-                            value={currentUrl} 
-                            size={120}
-                            level="M"
-                            includeMargin={false}
-                          />
-                        </motion.div>
+                     <div
+                       key="qr"
+                       className="flex items-center justify-center"
+                       style={{
+                         animation: 'qrAppear 0.5s ease-out'
+                       }}
+                     >
+                       <QRCodeSVG 
+                         value={currentUrl} 
+                         size={120}
+                         level="M"
+                         includeMargin={false}
+                       />
+                     </div>
                   ) : (
-                    <motion.span
+                    <span
                       key="eight"
-                      initial={{ scale: 0, rotate: 90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: -90 }}
-                      transition={{ duration: 0.5 }}
                       className="text-black text-7xl md:text-8xl font-bold"
+                      style={{
+                        animation: 'eightAppear 0.5s ease-out'
+                      }}
                     >
                       8
-                    </motion.span>
+                    </span>
                   )}
                 </AnimatePresence>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -371,14 +376,14 @@ export function DisplayPage() {
           transition={{ delay: 1 }}
           className="absolute bottom-12 text-center"
         >
-          <p className="text-white text-2xl mb-2">Scan the QR code to join the party!</p>
-          <p className="text-white/70 text-lg">{currentUrl}</p>
+          <p className="text-white text-2xl mb-2">Escaneie o QR Code e faça uma pergunta aos Espíritos!</p>
+          <p className="text-white/70 text-lg">aria.studio</p>
         </motion.div>
       )}
 
       {/* Footer */}
       <div className="absolute bottom-4 text-white/50 text-lg">
-        Magic 8 Party ✨
+        8 Ball Game
       </div>
     </div>
   )

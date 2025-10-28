@@ -1,16 +1,16 @@
 export const MAGIC_8_BALL_ANSWERS = [
-  "It is certain.",
-  "Without a doubt.",
-  "Yes – definitely.",
-  "You may rely on it.",
-  "Most likely.",
-  "Outlook good.",
-  "Reply hazy, try again.",
-  "Ask again later.",
-  "Better not tell you now.",
-  "My reply is no.",
-  "Outlook not so good.",
-  "Very doubtful."
+  "É certo.",
+  "Sem dúvida.",
+  "Sim – definitivamente.",
+  "Você pode contar com isso.",
+  "Muito provável.",
+  "Perspectiva boa.",
+  "Resposta nebulosa, tente novamente.",
+  "Pergunte novamente mais tarde.",
+  "Melhor não te dizer agora.",
+  "Minha resposta é não.",
+  "Perspectiva não tão boa.",
+  "Muito duvidoso."
 ] as const
 
 export function getRandomAnswer(): string {

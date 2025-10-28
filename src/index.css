@@ -37,3 +37,79 @@
   }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  5% { transform: translate(-25px, -15px) rotate(-8deg); }
+  10% { transform: translate(25px, 15px) rotate(8deg); }
+  15% { transform: translate(-25px, -15px) rotate(-8deg); }
+  20% { transform: translate(25px, 15px) rotate(8deg); }
+  25% { transform: translate(-20px, -12px) rotate(-6deg); }
+  30% { transform: translate(20px, 12px) rotate(6deg); }
+  35% { transform: translate(-25px, -15px) rotate(-8deg); }
+  40% { transform: translate(25px, 15px) rotate(8deg); }
+  45% { transform: translate(-15px, -10px) rotate(-5deg); }
+  50% { transform: translate(15px, 10px) rotate(5deg); }
+  55% { transform: translate(-20px, -12px) rotate(-6deg); }
+  60% { transform: translate(20px, 12px) rotate(6deg); }
+  65% { transform: translate(-10px, -6px) rotate(-3deg); }
+  70% { transform: translate(10px, 6px) rotate(3deg); }
+  75% { transform: translate(-5px, -3px) rotate(-1deg); }
+  80% { transform: translate(5px, 3px) rotate(1deg); }
+  85% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+  90% { transform: translate(2px, 1px) rotate(0.5deg); }
+  95% { transform: translate(-1px, 0px) rotate(-0.2deg); }
+}
+
+@keyframes answerAppear {
+  0% { 
+    transform: scale(0) rotate(-180deg); 
+    opacity: 0; 
+  }
+  50% { 
+    transform: scale(1.1) rotate(-90deg); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+}
+
+@keyframes answerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes ballIdle {
+  0% { 
+    transform: scale(0); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes qrAppear {
+  0% { 
+    transform: scale(0) rotate(-90deg); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+}
+
+@keyframes eightAppear {
+  0% { 
+    transform: scale(0) rotate(90deg); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+}
+

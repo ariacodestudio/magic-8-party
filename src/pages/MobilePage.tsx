@@ -124,12 +124,12 @@ export function MobilePage() {
         size="xl"
         className="font-bold uppercase tracking-wider"
       >
-        {isLoading ? "🔮 Consulting the spirits..." : "Ask the 8 Ball"}
+        {isLoading ? "🔮 Consultando os espíritos..." : "Pergunte à Bola 8"}
       </Button>
 
       {/* Footer */}
       <div className="absolute bottom-4 text-white/50 text-sm">
-        Magic 8 Party ✨
+        8 Ball Game
       </div>
     </div>
   )
