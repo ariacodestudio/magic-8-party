@@ -73,8 +73,8 @@ export function MobilePage() {
           className="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center relative overflow-hidden"
           style={{
             boxShadow: isShaking 
-              ? '0 0 60px rgba(0,255,255,0.8), inset 0 0 40px rgba(0,255,255,0.3)' 
-              : '0 0 20px rgba(0,255,255,0.3)'
+              ? '0 0 60px rgba(41,98,255,0.8), inset 0 0 40px rgba(41,98,255,0.3)' 
+              : '0 0 20px rgba(41,98,255,0.3)'
           }}
         >
           <motion.div 
@@ -86,7 +86,7 @@ export function MobilePage() {
             className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center"
             style={{
               boxShadow: isShaking 
-                ? '0 0 30px rgba(0,255,255,0.9)' 
+                ? '0 0 30px rgba(41,98,255,0.9)' 
                 : 'none'
             }}
           >

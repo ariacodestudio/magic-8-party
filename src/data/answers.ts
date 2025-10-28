@@ -1,7 +1,7 @@
 export const MAGIC_8_BALL_ANSWERS = [
   "É certo.",
   "Sem dúvida.",
-  "Sim! definitivamente.",
+  "Sim – definitivamente.",
   "Você pode contar com isso.",
   "Muito provável.",
   "Perspectiva boa.",

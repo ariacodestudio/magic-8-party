@@ -11,7 +11,7 @@ export function DisplayPage() {
   const [isShaking, setIsShaking] = useState(false)
   const [isPortrait, setIsPortrait] = useState(false)
   const [showControls, setShowControls] = useState(true)
-  const [portraitRotation, setPortraitRotation] = useState(0) // 0°, 90°, 180°, 270°
+  const [portraitRotation, setPortraitRotation] = useState(0) // 0°, 180°
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
   const controlsTimerRef = useRef<NodeJS.Timeout | null>(null)
   const qrSwitchTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -179,13 +179,13 @@ export function DisplayPage() {
           transform: isPortrait ? `rotate(${90 + portraitRotation}deg)` : 'rotate(0deg)',
           width: isPortrait ? '100vh' : '100vw',
           height: isPortrait ? '100vw' : '100vh',
-        transformOrigin: 'center center',
-        position: 'fixed',
-        top: isPortrait ? '50%' : '0',
-        left: isPortrait ? '50%' : '0',
-        marginLeft: isPortrait ? '-50vh' : '0',
-        marginTop: isPortrait ? '-50vw' : '0'
-      }}
+          transformOrigin: 'center center',
+          position: 'fixed',
+          top: isPortrait ? '50%' : '0',
+          left: isPortrait ? '50%' : '0',
+          marginLeft: isPortrait ? '-50vh' : '0',
+          marginTop: isPortrait ? '-50vw' : '0'
+        }}
       onMouseMove={handleMouseMove}
     >
       {/* Control buttons - auto-hide after 5 seconds */}
@@ -193,6 +193,23 @@ export function DisplayPage() {
         {showControls && (
           <>
             {/* Rotation toggle button */}
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsPortrait(!isPortrait)
+                resetControlsTimer()
+              }}
+              className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+            >
+                {isPortrait ? '↻ Landscape' : '↻ Portrait'}
+              </motion.button>
+
+              {/* Flip button - only in portrait mode */}
+              {isPortrait && (
                 <motion.button
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -200,31 +217,14 @@ export function DisplayPage() {
                   transition={{ duration: 0.3 }}
                   onClick={(e) => {
                     e.stopPropagation()
-                    setIsPortrait(!isPortrait)
+                    setPortraitRotation((prev) => (prev + 180) % 360)
                     resetControlsTimer()
                   }}
-                  className="absolute top-4 left-4 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
+                  className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
                 >
-                  {isPortrait ? '↻ Landscape' : '↻ Portrait'}
+                  🔄 Flip ({portraitRotation}°)
                 </motion.button>
-
-                {/* Flip button - only in portrait mode */}
-                {isPortrait && (
-                  <motion.button
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setPortraitRotation((prev) => (prev + 90) % 360)
-                      resetControlsTimer()
-                    }}
-                    className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm backdrop-blur-sm border border-white/20 transition-colors"
-                  >
-                    🔄 Flip ({portraitRotation}°)
-                  </motion.button>
-                )}
+              )}
 
             {/* Fullscreen toggle */}
             <motion.button
@@ -260,7 +260,7 @@ export function DisplayPage() {
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(41,98,255,0.4) 0%, transparent 70%)',
                 filter: 'blur(40px)',
                 animation: 'pulse 2s ease-in-out infinite'
               }}
@@ -270,7 +270,7 @@ export function DisplayPage() {
             <div
               className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
               style={{
-                boxShadow: '0 0 80px rgba(0,255,255,0.8), inset 0 0 60px rgba(0,255,255,0.3)'
+                boxShadow: '0 0 80px rgba(41,98,255,0.8), inset 0 0 60px rgba(41,98,255,0.3)'
               }}
             >
               {/* Shine effect while shaking - simplified */}
@@ -285,7 +285,7 @@ export function DisplayPage() {
               <div 
                 className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
                 style={{
-                  boxShadow: '0 0 40px rgba(0,255,255,0.9)',
+                  boxShadow: '0 0 40px rgba(41,98,255,0.9)',
                   animation: 'pulse 0.5s ease-in-out infinite'
                 }}
               >
@@ -310,8 +310,8 @@ export function DisplayPage() {
                 }`}
                 style={{
                   clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
-                  background: 'linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(0,255,255,0.3) 100%)',
-                  boxShadow: '0 0 40px rgba(0,255,255,0.6), inset 0 0 20px rgba(0,255,255,0.2)'
+                  background: 'linear-gradient(135deg, rgba(41,98,255,0.1) 0%, rgba(41,98,255,0.3) 100%)',
+                  boxShadow: '0 0 40px rgba(41,98,255,0.6), inset 0 0 20px rgba(41,98,255,0.2)'
                 }}
               >
                 {/* Text content */}
@@ -352,7 +352,7 @@ export function DisplayPage() {
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(0,255,255,0.2) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(41,98,255,0.2) 0%, transparent 70%)',
                 filter: 'blur(30px)',
                 animation: 'pulse 3s ease-in-out infinite'
               }}
@@ -362,7 +362,7 @@ export function DisplayPage() {
             <div
               className="w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl"
               style={{
-                boxShadow: '0 0 40px rgba(0,255,255,0.4), inset 0 0 40px rgba(0,255,255,0.1)'
+                boxShadow: '0 0 40px rgba(41,98,255,0.4), inset 0 0 40px rgba(41,98,255,0.1)'
               }}
             >
               {/* Subtle shine effect - static */}
@@ -374,7 +374,7 @@ export function DisplayPage() {
               <div 
                 className="w-40 h-40 md:w-48 md:h-48 bg-white rounded-full flex items-center justify-center relative z-10"
                 style={{
-                  boxShadow: '0 0 20px rgba(0,255,255,0.5)'
+                  boxShadow: '0 0 20px rgba(41,98,255,0.5)'
                 }}
               >
                 <AnimatePresence mode="wait">
