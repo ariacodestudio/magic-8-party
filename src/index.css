@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --neon-blue: 180 100% 50%;
+  }
+  
+  body {
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .neon-glow {
+    box-shadow: 0 0 20px theme('colors.neon-blue'),
+                0 0 40px theme('colors.neon-blue'),
+                0 0 60px theme('colors.neon-blue');
+  }
+  
+  .text-neon-glow {
+    text-shadow: 0 0 10px theme('colors.neon-blue'),
+                 0 0 20px theme('colors.neon-blue'),
+                 0 0 30px theme('colors.neon-blue');
+  }
+}
+
