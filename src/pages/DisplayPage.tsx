@@ -10,7 +10,6 @@ export function DisplayPage() {
   const [showQR, setShowQR] = useState(true)
   const [isShaking, setIsShaking] = useState(false)
   const answerTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const lastAnswerIdRef = useRef<string | null>(null)
   
   // Get the current URL for QR code
   const currentUrl = window.location.origin

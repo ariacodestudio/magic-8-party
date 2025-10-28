@@ -94,7 +94,7 @@ export function SupabaseDebug() {
     log("Attempting to insert test data...")
     
     const testMessage = `Test: ${new Date().toLocaleString()}`
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('answers')
       .insert([{ message: testMessage }])
       .select()
