@@ -105,7 +105,7 @@ export function MobilePage() {
             transition={{ duration: 0.3 }}
             className="mb-8 max-w-md w-full"
           >
-            <Card className="border-neon-blue/50 bg-black/80">
+            <Card className="border-neon-blue/50 bg-black/80 neon-glow">
               <CardContent className="p-6">
                 <p className="text-center text-xl md:text-2xl text-neon-blue text-neon-glow font-semibold">
                   {currentAnswer}
