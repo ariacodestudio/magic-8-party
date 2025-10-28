@@ -329,22 +329,21 @@ export function DisplayPage() {
               >
                 <AnimatePresence mode="wait">
                   {showQR ? (
-                    <motion.div
-                      key="qr"
-                      initial={{ scale: 0, rotate: -90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: 90 }}
-                      transition={{ duration: 0.5 }}
-                      className="flex flex-col items-center"
-                    >
-                      <QRCodeSVG 
-                        value={currentUrl} 
-                        size={120}
-                        level="M"
-                        includeMargin={false}
-                      />
-                      <p className="text-black text-xs mt-2 font-bold">SCAN ME</p>
-                    </motion.div>
+                        <motion.div
+                          key="qr"
+                          initial={{ scale: 0, rotate: -90 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          exit={{ scale: 0, rotate: 90 }}
+                          transition={{ duration: 0.5 }}
+                          className="flex items-center justify-center"
+                        >
+                          <QRCodeSVG 
+                            value={currentUrl} 
+                            size={120}
+                            level="M"
+                            includeMargin={false}
+                          />
+                        </motion.div>
                   ) : (
                     <motion.span
                       key="eight"
