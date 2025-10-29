@@ -194,7 +194,6 @@ export function DisplayPage() {
         loop
         muted
         playsInline
-        style={{ opacity: 0.3 }}
       >
         <source src="/curtainloop.mp4" type="video/mp4" />
       </video>
