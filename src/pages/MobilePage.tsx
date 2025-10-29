@@ -137,15 +137,19 @@ export function MobilePage() {
                   : '0 0 20px rgba(41,98,255,0.3)'
               }}
             >
+              <motion.div 
+                className="absolute inset-0 bg-white"
+                style={{ opacity: 0.05 }}
+              />
               <div 
-                className="w-24 h-24 md:w-32 md:h-32 bg-black rounded-full flex items-center justify-center"
+                className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center"
                 style={{
                   boxShadow: isShaking 
                     ? '0 0 25px rgba(41,98,255,0.8)' 
                     : 'none'
                 }}
               >
-                <span className="text-white text-4xl md:text-6xl font-bold">8</span>
+                <span className="text-black text-4xl md:text-6xl font-bold">8</span>
               </div>
             </div>
           </motion.div>
