@@ -187,6 +187,18 @@ export function DisplayPage() {
           }}
       onMouseMove={handleMouseMove}
     >
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{ opacity: 0.3 }}
+      >
+        <source src="/curtainloop.mp4" type="video/mp4" />
+      </video>
+
       {/* Control buttons - auto-hide after 5 seconds */}
       <AnimatePresence>
         {showControls && (
@@ -245,7 +257,8 @@ export function DisplayPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <AnimatePresence mode="wait">
+      <div className="relative z-10">
+        <AnimatePresence mode="wait">
         {isShaking ? (
           /* 8 Ball Shaking Animation - Low-spec optimized */
           <div
@@ -417,6 +430,7 @@ export function DisplayPage() {
           </div>
         )}
       </AnimatePresence>
+      </div>
 
       {/* Instructions (only show when QR is visible) */}
       {showQR && !latestAnswer && (
@@ -424,7 +438,7 @@ export function DisplayPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          className="absolute bottom-12 text-center"
+          className="absolute bottom-12 text-center z-10"
         >
           <p className="text-white text-5xl mb-2">Magic 🎱 Ball</p>
 
@@ -434,7 +448,7 @@ export function DisplayPage() {
       )}
 
       {/* Footer */}
-      <div className="absolute bottom-4 text-white/50 text-lg">
+      <div className="absolute bottom-4 text-white/50 text-lg z-10">
         aria.studio
       </div>
     </div>

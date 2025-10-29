@@ -1,15 +1,15 @@
 export const MAGIC_8_BALL_ANSWERS = [
   "É certo.",
   "Sem dúvida.",
-  "Sim – definitivamente.",
+  "Com certeza.",
   "Você pode contar com isso.",
   "Muito provável.",
-  "Perspectiva boa.",
+  "Desfecho muito bom.",
   "Resposta nebulosa, tente novamente.",
   "Pergunte novamente mais tarde.",
   "Melhor não te dizer agora.",
   "Minha resposta é não.",
-  "Perspectiva não tão boa.",
+  "Desfecho não muito bom.",
   "Muito duvidoso."
 ] as const
 
