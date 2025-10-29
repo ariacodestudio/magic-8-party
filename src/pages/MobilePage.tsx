@@ -161,7 +161,7 @@ export function MobilePage() {
         onClick={askThe8Ball}
         disabled={isLoading}
         variant="neon"
-        size="xl"
+        size="sm"
         className="font-bold uppercase tracking-wider mt-16"
       >
         {isLoading ? " Consultando os espíritos..." : "Pergunte à Bola 8"}
