@@ -195,7 +195,7 @@ export function DisplayPage() {
         muted
         playsInline
       >
-        <source src="/curtainloop5.mp4" type="video/mp4" />
+        <source src="/curtainloop6.mp4" type="video/mp4" />
       </video>
 
       {/* Control buttons - auto-hide after 5 seconds */}
