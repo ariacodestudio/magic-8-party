@@ -109,29 +109,22 @@ export function MobilePage() {
             </div>
           </div>
         ) : (
-          /* 8 Ball (normal or shaking) - Refined and polished */
+          /* 8 Ball (normal or shaking) - Low-spec optimized */
           <motion.div
             key="ball"
             className="relative"
             animate={isShaking ? "shake" : "idle"}
             variants={{
               shake: {
-                x: [0, -15, 18, -12, 16, -8, 14, -6, 12, -4, 8, -2, 4, -1, 2, 0],
-                y: [0, -8, 10, -6, 8, -4, 6, -3, 4, -2, 3, -1, 2, 0, 1, 0],
-                rotate: [0, -3, 4, -2, 3, -1, 2, -1, 1, -0.5, 1, -0.3, 0.5, -0.2, 0.3, 0],
-                scale: [1, 1.02, 0.98, 1.01, 0.99, 1.005, 0.995, 1.002, 0.998, 1.001, 0.999, 1],
-                transition: { 
-                  duration: 3, 
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                  times: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.97, 0.99, 0.995, 1]
-                }
+                x: [0, -20, 20, -20, 20, -15, 15, -20, 20, -10, 10, -15, 15, -8, 8, -5, 5, 0],
+                y: [0, -10, 10, -10, 10, -8, 8, -10, 10, -5, 5, -8, 8, -3, 3, -2, 2, 0],
+                rotate: [0, -5, 5, -5, 5, -4, 4, -5, 5, -3, 3, -4, 4, -2, 2, -1, 1, 0],
+                transition: { duration: 3, ease: "easeInOut" }
               },
               idle: {
                 x: 0,
                 y: 0,
-                rotate: 0,
-                scale: 1,
-                transition: { duration: 0.5, ease: "easeOut" }
+                rotate: 0
               }
             }}
           >
@@ -140,51 +133,19 @@ export function MobilePage() {
               style={{
                 background: '#000000',
                 boxShadow: isShaking 
-                  ? '0 0 60px rgba(41,98,255,0.8), 0 0 100px rgba(41,98,255,0.4), inset 0 0 20px rgba(41,98,255,0.2)' 
-                  : '0 0 20px rgba(41,98,255,0.3)',
-                transition: 'box-shadow 0.3s ease-out'
+                  ? '0 0 50px rgba(41,98,255,0.6)' 
+                  : '0 0 20px rgba(41,98,255,0.3)'
               }}
             >
-              <motion.div 
-                className="absolute inset-0 bg-white"
-                animate={isShaking ? { 
-                  opacity: [0.05, 0.2, 0.1, 0.25, 0.08, 0.3, 0.06, 0.2, 0.04, 0.15, 0.02, 0.05],
-                  scale: [1, 1.1, 0.9, 1.05, 0.95, 1.02, 0.98, 1.01, 0.99, 1.005, 0.995, 1]
-                } : { 
-                  opacity: 0.05,
-                  scale: 1
-                }}
-                transition={{ 
-                  duration: 3, 
-                  ease: "easeInOut",
-                  repeat: isShaking ? 0 : 0
-                }}
-              />
               <div 
-                className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center"
+                className="w-24 h-24 md:w-32 md:h-32 bg-black rounded-full flex items-center justify-center"
                 style={{
                   boxShadow: isShaking 
-                    ? '0 0 30px rgba(41,98,255,0.9), 0 0 50px rgba(41,98,255,0.6)' 
-                    : 'none',
-                  transition: 'box-shadow 0.3s ease-out'
+                    ? '0 0 25px rgba(41,98,255,0.8)' 
+                    : 'none'
                 }}
               >
-                <motion.span 
-                  className="text-black text-4xl md:text-6xl font-bold"
-                  animate={isShaking ? {
-                    scale: [1, 1.05, 0.95, 1.02, 0.98, 1.01, 0.99, 1.005, 0.995, 1],
-                    rotate: [0, 2, -2, 1, -1, 0.5, -0.5, 0.2, -0.2, 0]
-                  } : {
-                    scale: 1,
-                    rotate: 0
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    ease: "easeInOut"
-                  }}
-                >
-                  8
-                </motion.span>
+                <span className="text-white text-4xl md:text-6xl font-bold">8</span>
               </div>
             </div>
           </motion.div>
